@@ -18,7 +18,7 @@ package com.twitter.finatra
 import org.jboss.netty.handler.codec.http._
 import org.jboss.netty.handler.codec.http.HttpVersion.HTTP_1_1
 import org.jboss.netty.buffer.ChannelBuffers.copiedBuffer
-import com.twitter.finagle.http.{Response => FinagleResponse, Cookie}
+import com.twitter.finagle.http.{Response => FinagleResponse, Cookie, Status}
 import org.jboss.netty.util.CharsetUtil.UTF_8
 import com.twitter.util.Future
 
@@ -27,6 +27,7 @@ import java.io.File
 import org.jboss.netty.handler.codec.http.DefaultCookie
 import org.jboss.netty.handler.codec.http.{Cookie => NettyCookie}
 import com.twitter.finatra.serialization.{DefaultJacksonJsonSerializer, JsonSerializer}
+import org.jboss.netty.handler.codec.http.{Cookie => NettyCookie, HttpResponseStatus}
 
 object ResponseBuilder {
   def apply(body: String): FinagleResponse =
@@ -231,59 +232,59 @@ class ResponseBuilder(serializer:JsonSerializer = DefaultJacksonJsonSerializer) 
 trait CommonStatuses { self: ResponseBuilder =>
 
   def ok: ResponseBuilder = {
-    buildFromStatus(200)
+    buildFromStatus(Status.Ok)
   }
 
   def movedPermanently: ResponseBuilder = {
-    buildFromStatus(301)
+    buildFromStatus(Status.MovedPermanently)
   }
 
   def found: ResponseBuilder = {
-    buildFromStatus(302)
+    buildFromStatus(Status.Found)
   }
 
   def notModified: ResponseBuilder = {
-    buildFromStatus(304)
+    buildFromStatus(Status.NotModified)
   }
 
   def temporaryRedirect: ResponseBuilder = {
-    buildFromStatus(307)
+    buildFromStatus(Status.TemporaryRedirect)
   }
 
   def badRequest: ResponseBuilder = {
-    buildFromStatus(400)
+    buildFromStatus(Status.BadRequest)
   }
 
   def unauthorized: ResponseBuilder = {
-    buildFromStatus(401)
+    buildFromStatus(Status.Unauthorized)
   }
 
   def forbidden: ResponseBuilder = {
-    buildFromStatus(403)
+    buildFromStatus(Status.Forbidden)
   }
 
   def notFound: ResponseBuilder  = {
-    buildFromStatus(404)
+    buildFromStatus(Status.NotFound)
   }
 
   def gone: ResponseBuilder = {
-    buildFromStatus(410)
+    buildFromStatus(Status.Gone)
   }
 
   def internalServerError: ResponseBuilder = {
-    buildFromStatus(500)
+    buildFromStatus(Status.InternalServerError)
   }
 
   def notImplemented: ResponseBuilder = {
-    buildFromStatus(501)
+    buildFromStatus(Status.NotImplemented)
   }
 
   def serviceUnavailable: ResponseBuilder = {
-    buildFromStatus(503)
+    buildFromStatus(Status.ServiceUnavailable)
   }
 
-  private def buildFromStatus(i: Int): ResponseBuilder  = {
-    status(i)
+  private def buildFromStatus(st: HttpResponseStatus): ResponseBuilder  = {
+    status(st.getCode)
     this
   }
 
