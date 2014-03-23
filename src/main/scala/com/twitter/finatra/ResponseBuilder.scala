@@ -39,7 +39,7 @@ object ResponseBuilder {
     new ResponseBuilder().body(body).status(status).headers(headers).build
 }
 
-class ResponseBuilder(serializer:JsonSerializer = DefaultJacksonJsonSerializer) {
+class ResponseBuilder(serializer:JsonSerializer = DefaultJacksonJsonSerializer) extends CommonStatuses {
   private var status:     Option[Int]          = None
   private var headers:    Map[String, String]  = Map()
   private var strBody:    Option[String]       = None
@@ -107,16 +107,6 @@ class ResponseBuilder(serializer:JsonSerializer = DefaultJacksonJsonSerializer) 
 
   def cookie(c: NettyCookie): ResponseBuilder = {
     this.cookies ::= new Cookie(c)
-    this
-  }
-
-  def ok: ResponseBuilder = {
-    status(200)
-    this
-  }
-
-  def notFound: ResponseBuilder  = {
-    status(404)
     this
   }
 
@@ -234,6 +224,67 @@ class ResponseBuilder(serializer:JsonSerializer = DefaultJacksonJsonSerializer) 
     buf.append(this.headers)
 
     buf.toString()
+  }
+
+}
+
+trait CommonStatuses { self: ResponseBuilder =>
+
+  def ok: ResponseBuilder = {
+    buildFromStatus(200)
+  }
+
+  def movedPermanently: ResponseBuilder = {
+    buildFromStatus(301)
+  }
+
+  def found: ResponseBuilder = {
+    buildFromStatus(302)
+  }
+
+  def notModified: ResponseBuilder = {
+    buildFromStatus(304)
+  }
+
+  def temporaryRedirect: ResponseBuilder = {
+    buildFromStatus(307)
+  }
+
+  def badRequest: ResponseBuilder = {
+    buildFromStatus(400)
+  }
+
+  def unauthorized: ResponseBuilder = {
+    buildFromStatus(401)
+  }
+
+  def forbidden: ResponseBuilder = {
+    buildFromStatus(403)
+  }
+
+  def notFound: ResponseBuilder  = {
+    buildFromStatus(404)
+  }
+
+  def gone: ResponseBuilder = {
+    buildFromStatus(410)
+  }
+
+  def internalServerError: ResponseBuilder = {
+    buildFromStatus(500)
+  }
+
+  def notImplemented: ResponseBuilder = {
+    buildFromStatus(501)
+  }
+
+  def serviceUnavailable: ResponseBuilder = {
+    buildFromStatus(503)
+  }
+
+  private def buildFromStatus(i: Int): ResponseBuilder  = {
+    status(i)
+    this
   }
 
 }
