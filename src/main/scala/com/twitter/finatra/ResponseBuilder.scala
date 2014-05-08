@@ -231,6 +231,8 @@ class ResponseBuilder(serializer:JsonSerializer = DefaultJacksonJsonSerializer) 
 
 trait CommonStatuses { self: ResponseBuilder =>
   def ok:                  ResponseBuilder = buildFromStatus(Status.Ok)
+  def created:             ResponseBuilder = buildFromStatus(Status.Created)
+  def accepted:            ResponseBuilder = buildFromStatus(Status.Accepted)
   def movedPermanently:    ResponseBuilder = buildFromStatus(Status.MovedPermanently)
   def found:               ResponseBuilder = buildFromStatus(Status.Found)
   def notModified:         ResponseBuilder = buildFromStatus(Status.NotModified)
