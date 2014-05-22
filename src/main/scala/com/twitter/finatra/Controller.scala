@@ -46,7 +46,7 @@ class Controller extends App with Logging with Stats {
 
   val stats = statsReceiver.scope("Controller")
 
-  val serializer = new DefaultJacksonJsonSerializer
+  val serializer = DefaultJacksonJsonSerializer
 
   def render: ResponseBuilder  = new ResponseBuilder(serializer)
   def route:  Router    = new Router(this)
