@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.twitter</groupId>
   <artifactId>finatra</artifactId>
-  <version>1.5.4</version>
+  <version>1.5.4-enoc</version>
   <name>${project.artifactId}</name>
   <description>Sinatra clone on top of finagle-http</description>
   <inceptionYear>2012</inceptionYear>
@@ -86,6 +86,11 @@
       <groupId>com.twitter</groupId>
       <artifactId>twitter-server_2.10</artifactId>
       <version>1.7.1</version>
+    </dependency>
+    <dependency>
+      <groupId>com.twitter</groupId>
+      <artifactId>finagle-stats_2.10</artifactId>
+      <version>6.13.1</version>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
